@@ -61,7 +61,7 @@ alembic upgrade head
 
 4. Запустите API:
 ```
-$ uvicorn app.main:app --reload
+uvicorn app.main:app --reload
 ```
 
 5. После запуска документация доступна по адресу: http://localhost:8000/docs
