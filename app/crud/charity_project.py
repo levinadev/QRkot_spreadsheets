@@ -81,20 +81,9 @@ class ProjectCRUD(BaseCRUD):
         proj = CharityProject
 
         duration = (
-            (
-                extract("year", proj.close_date)
-                - extract("year", proj.create_date)
-            )
-            * 365
-            + (
-                extract("month", proj.close_date)
-                - extract("month", proj.create_date)
-            )
-            * 30
-            + (
-                extract("day", proj.close_date)
-                - extract("day", proj.create_date)
-            )
+                (extract("year", proj.close_date) - extract("year", proj.create_date)) * 365
+                + (extract("month", proj.close_date) - extract("month", proj.create_date)) * 30
+                + (extract("day", proj.close_date) - extract("day", proj.create_date))
         )
 
         query = (
