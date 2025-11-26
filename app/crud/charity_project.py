@@ -99,7 +99,7 @@ class ProjectCRUD(BaseCRUD):
 
         query = (
             select(proj, duration)
-            .where(proj.fully_invested == True)
+            .where(proj.fully_invested.is_(True))
             .order_by(duration)
         )
 
