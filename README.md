@@ -45,8 +45,8 @@
 ## Установка и запуск локально
 1. Склонируйте репозиторий:
 ```
-git clone https://github.com/levinadev/cat-charity-2.git
-cd cat-charity-2
+git clone https://github.com/levinadev/QRkot_spreadsheets.git
+cd QRkot_spreadsheets
 ```
 
 2. Установите зависимости:
