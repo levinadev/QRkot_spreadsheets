@@ -72,6 +72,7 @@ async def create_donation(
 
     # Получаем все открытые проекты
     projects = await project_crud.get_all(session)
+    session.expunge_all()
 
     # Распределяем новый донат по проектам
     for project in projects:
