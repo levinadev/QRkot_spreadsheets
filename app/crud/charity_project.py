@@ -108,8 +108,8 @@ class ProjectCRUD(BaseCRUD):
 
         return [
             {
-                "project_name": project.name,
-                "collection_time_days": duration,
+                "name": project.name,
+                "days": duration,
                 "description": project.description,
             }
             for project, duration in rows
