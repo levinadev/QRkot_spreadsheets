@@ -90,8 +90,8 @@ async def check_full_amount_not_less_than_invested(
     :return: None
     """
     if (
-        new_full_amount is not None
-        and new_full_amount < project.invested_amount
+        new_full_amount is not None and
+        new_full_amount < project.invested_amount
     ):
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
