@@ -25,7 +25,7 @@ repos:
     hooks:
       - id: black
         files: ^app/
-        exclude: '^.*\b(alembic)\b.*$|.*charity_project.*\.py$'
+        exclude: '^.*\b(alembic)\b.*$|.*charity_project.*\.py$|.*validators\.py$'
 
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.2.0
