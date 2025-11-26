@@ -55,6 +55,7 @@ async def create_charity_project(
     """
     await check_name_duplicate(charity_project.name, session)
     new_db_entry = await project_crud.create(charity_project, session)
+    session.expunge_all()
 
     # Пересчет донатов в проекты
     await invest_donations_in_projects(new_db_entry, session)
