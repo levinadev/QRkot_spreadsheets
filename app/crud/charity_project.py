@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import select
+from sqlalchemy import extract, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import BaseCRUD
@@ -66,6 +66,54 @@ class ProjectCRUD(BaseCRUD):
         await session.commit()
         await session.refresh(db_obj)
         return db_obj
+
+    async def get_projects_by_completion_rate(
+        self, session: AsyncSession
+    ) -> list[dict]:
+        """
+        Метод сортирует список со всеми закрытыми проектами
+        по количеству времени, которое понадобилось
+        на сбор средств, — от меньшего к большему.
+
+        :param session: сессия
+        :return: список словарей с данными
+        """
+        proj = CharityProject
+
+        duration = (
+            (
+                extract("year", proj.close_date)
+                - extract("year", proj.create_date)
+            )
+            * 365
+            + (
+                extract("month", proj.close_date)
+                - extract("month", proj.create_date)
+            )
+            * 30
+            + (
+                extract("day", proj.close_date)
+                - extract("day", proj.create_date)
+            )
+        ).label("duration")
+
+        query = (
+            select(proj, duration)
+            .where(proj.fully_invested == True)
+            .order_by(duration)
+        )
+
+        result = await session.execute(query)
+        rows = result.all()
+
+        return [
+            {
+                "project_name": project.name,
+                "collection_time_days": duration,
+                "description": project.description,
+            }
+            for project, duration in rows
+        ]
 
 
 project_crud = ProjectCRUD(CharityProject)
