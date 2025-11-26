@@ -59,7 +59,6 @@ async def invest_donations_in_projects(
 
         # Сохраняет в БД
         await donation_crud.save(donation, session)
-        await session.refresh(project)
 
     # Если проект полностью профинансирован, закрывает
     if project.invested_amount >= project.full_amount:
