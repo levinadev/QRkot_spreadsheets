@@ -95,7 +95,7 @@ class ProjectCRUD(BaseCRUD):
                 extract("day", proj.close_date)
                 - extract("day", proj.create_date)
             )
-        ).label("duration")
+        )
 
         query = (
             select(proj, duration)
