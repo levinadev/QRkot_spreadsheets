@@ -15,9 +15,9 @@ class ProjectCRUD(BaseCRUD):
     """
 
     async def get_by_name(
-            self,
-            project_name: str,
-            session: AsyncSession,
+        self,
+        project_name: str,
+        session: AsyncSession,
     ) -> Optional[int]:
         """
         Метод для проверки уникальности поля name.
@@ -30,8 +30,7 @@ class ProjectCRUD(BaseCRUD):
                 CharityProject.name == project_name
             )
         )
-        db_id = db_id.scalars().first()
-        return db_id
+        return db_id.scalars().first()
 
     async def update(
             self, db_obj, input_obj, session: AsyncSession
@@ -68,35 +67,27 @@ class ProjectCRUD(BaseCRUD):
         return db_obj
 
     async def get_projects_by_completion_rate(
-            self, session: AsyncSession
+        self,
+        session: AsyncSession
     ) -> list[dict]:
         """
-        Метод сортирует список со всеми закрытыми проектами
+        Метод сортирует список всех закрытых проектов
         по количеству времени, которое понадобилось
-        на сбор средств, — от меньшего к большему.
+        на сбор средств — от меньшего к большему.
 
         :param session: сессия
         :return: список словарей с данными
         """
-        proj = CharityProject
+        cp = CharityProject
 
-        y = (
-                extract("year", proj.close_date)
-                - extract("year", proj.create_date)
-        )
-        m = (
-                extract("month", proj.close_date)
-                - extract("month", proj.create_date)
-        )
-        d = (
-                extract("day", proj.close_date)
-                - extract("day", proj.create_date)
-        )
+        y = extract("year", cp.close_date) - extract("year", cp.create_date)
+        m = extract("month", cp.close_date) - extract("month", cp.create_date)
+        d = extract("day", cp.close_date) - extract("day", cp.create_date)
         duration = y * 365 + m * 30 + d
 
         query = (
-            select(proj, duration)
-            .where(proj.fully_invested.is_(True))
+            select(cp, duration)
+            .where(cp.fully_invested.is_(True))
             .order_by(duration)
         )
 
