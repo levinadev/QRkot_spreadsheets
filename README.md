@@ -47,15 +47,7 @@ git clone https://github.com/levinadev/cat-charity-2.git
 cd cat-charity-2
 ```
 
-2. Создайте файл `.env` в корне проекта с таким содержимым:
-```
-APP_TITLE='API "Фонд поддержки котиков QRKot"'
-APP_DESCRIPTION='Фонд собирает пожертвования на всевозможные задачи, связанные с помощью кошачьей популяции'
-DATABASE_URL='sqlite+aiosqlite:///./fastapi.db'
-SECRET='secretkey'
-```
-
-3. Установите зависимости:
+2. Установите зависимости:
 ```
 uv sync
 ```
@@ -65,14 +57,14 @@ uv sync
 alembic upgrade head
 ```
 
-3. Запустите API:
+4. Запустите API:
 ```
 $ uvicorn app.main:app --reload
 ```
 
-4. После запуска документация доступна по адресу: http://localhost:8000/docs
+5. После запуска документация доступна по адресу: http://localhost:8000/docs
 
-5. Для остановки нажмите в консоли `CTRL+C`
+6. Для остановки нажмите в консоли `CTRL+C`
 
 
 ## Примеры запросов:
