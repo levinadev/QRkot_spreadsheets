@@ -15,9 +15,9 @@ class ProjectCRUD(BaseCRUD):
     """
 
     async def get_by_name(
-        self,
-        project_name: str,
-        session: AsyncSession,
+            self,
+            project_name: str,
+            session: AsyncSession,
     ) -> Optional[int]:
         """
         Метод для проверки уникальности поля name.
@@ -34,7 +34,7 @@ class ProjectCRUD(BaseCRUD):
         return db_id
 
     async def update(
-        self, db_obj, input_obj, session: AsyncSession
+            self, db_obj, input_obj, session: AsyncSession
     ) -> Optional[int]:
         """
         Метод для обновления записи из БД.
@@ -55,9 +55,9 @@ class ProjectCRUD(BaseCRUD):
 
         # Дополнительная логика закрытия проекта
         if (
-            db_obj.full_amount is not None
-            and db_obj.invested_amount == db_obj.full_amount
-            and not db_obj.fully_invested
+                db_obj.full_amount is not None and
+                db_obj.invested_amount == db_obj.full_amount and not
+                db_obj.fully_invested
         ):
             db_obj.fully_invested = True
             db_obj.close_date = datetime.now(timezone.utc)
@@ -68,7 +68,7 @@ class ProjectCRUD(BaseCRUD):
         return db_obj
 
     async def get_projects_by_completion_rate(
-        self, session: AsyncSession
+            self, session: AsyncSession
     ) -> list[dict]:
         """
         Метод сортирует список со всеми закрытыми проектами
@@ -80,9 +80,15 @@ class ProjectCRUD(BaseCRUD):
         """
         proj = CharityProject
 
-        y = extract("year", proj.close_date) - extract("year", proj.create_date)
-        m = extract("month", proj.close_date) - extract("month", proj.create_date)
-        d = extract("day", proj.close_date) - extract("day", proj.create_date)
+        y = (
+                extract("year", proj.close_date) - extract("year", proj.create_date)
+        )
+        m = (
+                extract("month", proj.close_date) - extract("month", proj.create_date)
+        )
+        d = (
+                extract("day", proj.close_date) - extract("day", proj.create_date)
+        )
         duration = y * 365 + m * 30 + d
 
         query = (
