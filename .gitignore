@@ -128,5 +128,20 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# .idea
+# IDE folders
 .idea
+.DS_Store
+.AppleDouble
+.LSOverride
+
+*.sublime-project
+*.sublime-workspace
+
+.vscode/
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# db
+*.db
