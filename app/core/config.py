@@ -1,7 +1,6 @@
 from typing import Optional
 
-from pydantic import EmailStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseSettings, EmailStr
 
 
 class Settings(BaseSettings):
@@ -23,9 +22,9 @@ class Settings(BaseSettings):
     client_x509_cert_url: Optional[str] = None
     email: Optional[str] = None
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8"
-    )
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()

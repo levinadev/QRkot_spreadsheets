@@ -1,4 +1,4 @@
-from typing import Annotated, Optional, Union
+from typing import Optional, Union
 
 from fastapi import Depends, Request
 from fastapi_users import (
@@ -26,9 +26,7 @@ MIN_PASSWORD_LENGTH = 3
 
 
 # Доступ к базе пользователей
-async def get_user_db(
-    session: Annotated[AsyncSession, Depends(get_async_session)]
-):
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
 
 

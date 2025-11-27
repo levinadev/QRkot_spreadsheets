@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field, PositiveInt
 
@@ -10,46 +10,40 @@ class CharityProjectBase(BaseModel):
     Базовая схема проекта
     """
 
-    name: Annotated[
-        str,
-        Field(
-            min_length=5,
-            max_length=100,
-            json_schema_extra={
-                "description": "Название проекта",
-                "example": "Помощь котикам",
-            },
-        ),
-    ]
+    name: str = Field(
+        ...,
+        min_length=5,
+        max_length=100,
+        json_schema_extra={
+            "description": "Название проекта",
+            "example": "Помощь котикам",
+        },
+    )
 
-    description: Annotated[
-        str,
-        Field(
-            min_length=10,
-            json_schema_extra={
-                "description": "Описание проекта",
-                "example": "На корм для котиков",
-            },
-        ),
-    ]
+    description: str = Field(
+        ...,
+        min_length=10,
+        json_schema_extra={
+            "description": "Описание проекта",
+            "example": "На корм для котиков",
+        },
+    )
 
-    full_amount: Annotated[
-        PositiveInt,
-        Field(
-            json_schema_extra={
-                "description": "Целевая сумма проекта",
-                "example": "1000",
-            },
-        ),
-    ]
+    full_amount: PositiveInt = Field(
+        ...,
+        json_schema_extra={
+            "description": "Целевая сумма проекта",
+            "example": "1000",
+        },
+    )
 
 
 class CharityProjectCreate(CharityProjectBase):
     """
     Схема запроса для создания проекта
     """
-
-    model_config = {"extra": "forbid"}
+    class Config:
+        extra = "forbid"
 
 
 class CharityProjectDB(DBInfo, CharityProjectBase):
@@ -63,38 +57,32 @@ class CharityProjectUpdate(BaseModel):
     Схема запроса для обновления
     """
 
-    name: Annotated[
-        Optional[str],
-        Field(
-            min_length=5,
-            max_length=100,
-            json_schema_extra={
-                "description": "Название проекта",
-                "example": "Помощь котикам",
-            },
-        ),
-    ] = None
+    name: Optional[str] = Field(
+        None,
+        min_length=5,
+        max_length=100,
+        json_schema_extra={
+            "description": "Название проекта",
+            "example": "Помощь котикам",
+        },
+    )
 
-    description: Annotated[
-        Optional[str],
-        Field(
-            min_length=10,
-            json_schema_extra={
-                "description": "Описание проекта",
-                "example": "На корм для котиков",
-            },
-        ),
-    ] = None
+    description: Optional[str] = Field(
+        None,
+        min_length=10,
+        json_schema_extra={
+            "description": "Описание проекта",
+            "example": "На корм для котиков",
+        },
+    )
 
-    full_amount: Annotated[
-        Optional[PositiveInt],
-        Field(
-            json_schema_extra={
-                "description": "Целевая сумма проекта",
-                "example": "2000",
-            },
-        ),
-    ] = None
+    full_amount: Optional[PositiveInt] = Field(
+        None,
+        json_schema_extra={
+            "description": "Целевая сумма проекта",
+            "example": "2000",
+        },
+    )
 
     class Config:
         extra = "forbid"
