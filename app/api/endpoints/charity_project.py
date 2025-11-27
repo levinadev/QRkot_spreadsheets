@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +20,6 @@ from app.services.investment import invest_donations_in_projects
 
 router = APIRouter()
 
-SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
-
 
 @router.get(
     "/",
@@ -31,7 +27,7 @@ SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
     response_model_exclude_none=True,
 )
 async def get_all_charity_projects(
-    session: SessionDep,
+    session: AsyncSession = Depends(get_async_session),
 ) -> list[CharityProjectDB]:
     """
     Просмотреть список всех целевых проектов
@@ -47,7 +43,7 @@ async def get_all_charity_projects(
 )
 async def create_charity_project(
     charity_project: CharityProjectCreate,
-    session: SessionDep,
+    session: AsyncSession = Depends(get_async_session),
 ) -> CharityProjectDB:
     """
     Создать целевой проект.
@@ -72,7 +68,7 @@ async def create_charity_project(
 async def update_charity_project(
     project_id: int,
     obj_in: CharityProjectUpdate,
-    session: SessionDep,
+    session: AsyncSession = Depends(get_async_session),
 ) -> CharityProjectDB:
     """
     Редактировать целевой проект.
@@ -81,22 +77,11 @@ async def update_charity_project(
     Закрытый проект нельзя редактировать;
     нельзя установить требуемую сумму меньше уже вложенной.
     """
-    # Ищем запись в БД по id
     db_record = await check_charity_project_id_exists(project_id, session)
-
-    # Закрытый проект нельзя редактировать
     await check_closed_project(db_record)
-
-    # Сумма не может быть меньше уже вложенной
-    await check_full_amount_not_less_than_invested(
-        obj_in.full_amount, db_record
-    )
-
-    # Проверка уникальности имени
+    await check_full_amount_not_less_than_invested(obj_in.full_amount, db_record)
     if obj_in.name is not None:
         await check_name_duplicate(obj_in.name, session)
-
-    # Обновляем запись и возвращаем клиенту
     return await project_crud.update(db_record, obj_in, session)
 
 
@@ -108,7 +93,7 @@ async def update_charity_project(
 )
 async def delete_charity_project(
     project_id: int,
-    session: SessionDep,
+    session: AsyncSession = Depends(get_async_session),
 ) -> CharityProjectDB:
     """
     Удалить целевой проект.
@@ -117,9 +102,5 @@ async def delete_charity_project(
     Нельзя удалить проект, в который уже были инвестированы средства.
     """
     db_record = await check_charity_project_id_exists(project_id, session)
-
-    # Запрещаем удаление проекта, в который уже вложены деньги
     await check_project_has_no_investments(db_record)
-
-    # Удаляем запись и возвращаем клиенту
     return await project_crud.delete(db_record, session)
