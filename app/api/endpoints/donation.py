@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -18,8 +16,6 @@ from app.services.investment import invest_donations_in_projects
 
 router = APIRouter()
 
-SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
-
 
 @router.get(
     "/",
@@ -28,7 +24,7 @@ SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
     dependencies=[Depends(current_superuser)],
 )
 async def get_all_donations(
-    session: SessionDep,
+    session: AsyncSession = Depends(get_async_session),
 ) -> list[DonationDB]:
     """
     Просмотреть список всех пожертвований.
@@ -43,12 +39,12 @@ async def get_all_donations(
     response_model_exclude={"user_id"},
 )
 async def get_user_donations(
-    session: SessionDep, user: Annotated[User, Depends(current_user)]
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ) -> list[DonationUserResponse]:
     """
     Просмотреть список пожертвований пользователя,
     выполняющего запрос.
-
     Только для зарегистрированных пользователей.
     """
     return await donation_crud.get_by_user(session=session, user=user)
@@ -61,8 +57,8 @@ async def get_user_donations(
 )
 async def create_donation(
     donation: DonationCreate,
-    session: SessionDep,
-    user: Annotated[User, Depends(current_user)],
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user),
 ) -> DonationCreateResponse:
     """
     Создать пожертвование и привязать к пользователю.
