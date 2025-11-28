@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Optional
 
 from sqlalchemy import Boolean, Column, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -21,7 +22,7 @@ class CommonMixin:
 class InvestmentBase(CommonMixin, Base):
     __abstract__ = True
 
-    invested_amount: Mapped[str] = Column(
+    invested_amount: Mapped[int] = Column(
         Integer,
         nullable=False,
         default=0,
@@ -39,7 +40,7 @@ class InvestmentBase(CommonMixin, Base):
         default=lambda: datetime.now(timezone.utc),
         comment="Дата создания проекта",
     )
-    close_date: Mapped[datetime] = Column(
+    close_date: Mapped[Optional[datetime]] = Column(
         DateTime(timezone=True),
         nullable=True,
         comment="Дата закрытия проекта",
