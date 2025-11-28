@@ -5,6 +5,17 @@ from pydantic import BaseModel, Field, PositiveInt
 
 from app.schemas.base import DBInfo
 
+DESC_FULL_AMOUNT = "Сумма пожертвования"
+DESC_COMMENT = "Комментарий пользователя"
+DESC_USER_ID = "Уникальный идентификатор пользователя"
+DESC_ID = "Уникальный идентификатор записи"
+DESC_CREATE_DATE = "Дата создания проекта"
+EXAMPLE_FULL_AMOUNT = 500
+EXAMPLE_COMMENT = "На помощь котикам"
+EXAMPLE_USER_ID = "1"
+EXAMPLE_ID = "1"
+EXAMPLE_CREATE_DATE = "2025-11-15 15:42:19"
+
 
 class DonationBase(BaseModel):
     """
@@ -14,16 +25,16 @@ class DonationBase(BaseModel):
     full_amount: PositiveInt = Field(
         ...,
         json_schema_extra={
-            "description": "Сумма пожертвования",
-            "example": 500,
+            "description": DESC_FULL_AMOUNT,
+            "example": EXAMPLE_FULL_AMOUNT,
         },
     )
 
     comment: Optional[str] = Field(
         None,
         json_schema_extra={
-            "description": "Комментарий пользователя",
-            "example": "На помощь котикам",
+            "description": DESC_COMMENT,
+            "example": EXAMPLE_COMMENT,
         },
     )
 
@@ -45,8 +56,8 @@ class DonationDB(DBInfo, DonationBase):
     user_id: PositiveInt = Field(
         ...,
         json_schema_extra={
-            "description": "Уникальный идентификатор записи",
-            "example": "1",
+            "description": DESC_USER_ID,
+            "example": EXAMPLE_USER_ID,
         },
     )
 
@@ -59,16 +70,16 @@ class DonationCreateResponse(DonationBase):
     id: PositiveInt = Field(
         ...,
         json_schema_extra={
-            "description": "Уникальный идентификатор записи",
-            "example": "1",
+            "description": DESC_ID,
+            "example": EXAMPLE_ID,
         },
     )
 
     create_date: datetime = Field(
         ...,
         json_schema_extra={
-            "description": "Дата создания проекта",
-            "example": "2025-11-15 15:42:19",
+            "description": DESC_CREATE_DATE,
+            "example": EXAMPLE_CREATE_DATE,
         },
     )
 

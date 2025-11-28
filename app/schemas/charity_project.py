@@ -4,6 +4,17 @@ from pydantic import BaseModel, Field, PositiveInt
 
 from app.schemas.base import DBInfo
 
+NAME_MIN_LENGTH = 5
+NAME_MAX_LENGTH = 100
+DESCRIPTION_MIN_LENGTH = 10
+DESC_NAME = "Название проекта"
+DESC_DESCRIPTION = "Описание проекта"
+DESC_FULL_AMOUNT = "Целевая сумма проекта"
+EXAMPLE_NAME = "Помощь котикам"
+EXAMPLE_DESCRIPTION = "На корм для котиков"
+EXAMPLE_FULL_AMOUNT_CREATE = "1000"
+EXAMPLE_FULL_AMOUNT_UPDATE = "2000"
+
 
 class CharityProjectBase(BaseModel):
     """
@@ -12,28 +23,28 @@ class CharityProjectBase(BaseModel):
 
     name: str = Field(
         ...,
-        min_length=5,
-        max_length=100,
+        min_length=NAME_MIN_LENGTH,
+        max_length=NAME_MAX_LENGTH,
         json_schema_extra={
-            "description": "Название проекта",
-            "example": "Помощь котикам",
+            "description": DESC_NAME,
+            "example": EXAMPLE_NAME,
         },
     )
 
     description: str = Field(
         ...,
-        min_length=10,
+        min_length=DESCRIPTION_MIN_LENGTH,
         json_schema_extra={
-            "description": "Описание проекта",
-            "example": "На корм для котиков",
+            "description": DESC_DESCRIPTION,
+            "example": EXAMPLE_DESCRIPTION,
         },
     )
 
     full_amount: PositiveInt = Field(
         ...,
         json_schema_extra={
-            "description": "Целевая сумма проекта",
-            "example": "1000",
+            "description": DESC_FULL_AMOUNT,
+            "example": EXAMPLE_FULL_AMOUNT_CREATE,
         },
     )
 
@@ -59,28 +70,28 @@ class CharityProjectUpdate(BaseModel):
 
     name: Optional[str] = Field(
         None,
-        min_length=5,
-        max_length=100,
+        min_length=NAME_MIN_LENGTH,
+        max_length=NAME_MAX_LENGTH,
         json_schema_extra={
-            "description": "Название проекта",
-            "example": "Помощь котикам",
+            "description": DESC_NAME,
+            "example": EXAMPLE_NAME,
         },
     )
 
     description: Optional[str] = Field(
         None,
-        min_length=10,
+        min_length=DESCRIPTION_MIN_LENGTH,
         json_schema_extra={
-            "description": "Описание проекта",
-            "example": "На корм для котиков",
+            "description": DESC_DESCRIPTION,
+            "example": EXAMPLE_DESCRIPTION,
         },
     )
 
     full_amount: Optional[PositiveInt] = Field(
         None,
         json_schema_extra={
-            "description": "Целевая сумма проекта",
-            "example": "2000",
+            "description": DESC_FULL_AMOUNT,
+            "example": EXAMPLE_FULL_AMOUNT_UPDATE,
         },
     )
 
