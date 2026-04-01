@@ -1,0 +1,21 @@
+services:
+  backend:
+    image: annalevina/qrkot_backend:latest
+    build: .
+    container_name: qrkot-backend
+    restart: always
+    env_file:
+      - .env
+    expose:
+      - "8000"
+
+  nginx:
+    image: annalevina/qrkot_nginx:latest
+    build: ./infra
+    container_name: qrkot-proxy
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8012:80"
+

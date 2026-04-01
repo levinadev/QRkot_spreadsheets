@@ -1,4 +1,7 @@
 # API "Фонд поддержки котиков QRKot"
+
+![CI/CD](https://github.com/levinadev/QRkot_spreadsheets/actions/workflows/main.yml/badge.svg)
+
 Вымышленный благотворительный фонд поддержки котиков QRKot собирает пожертвования на всевозможные задачи, 
 связанные с помощью кошачьей популяции: на корм, на медицинское обслуживание, 
 организацию приютов и на другую помощь котам, кошкам и котятам.
@@ -73,6 +76,27 @@ uvicorn app.main:app --reload
 6. После запуска документация доступна по адресу: http://localhost:8000/docs
 
 7. Для остановки нажмите в консоли `CTRL+C`
+
+## Запуск через Docker
+1. Создайте `.env`:
+```
+cp .env.example .env
+```
+
+2. Запустите контейнеры:
+```
+docker compose -f docker-compose.production.yml up -d --build
+```
+
+3. API-документация будет доступна по адресу:
+```
+http://localhost:8012/docs
+```
+
+4. Остановка:
+```
+docker compose -f docker-compose.production.yml down
+```
 
 
 ## Примеры запросов:
